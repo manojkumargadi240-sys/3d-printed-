@@ -3,75 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printed Store | Dynamic Dashboard</title>
+    <title>3D Printed Store India</title>
     <style>
-        /* Modern E-Commerce Styling */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f6f9fc;
+            background-color: #f4f6f9;
             color: #333;
         }
         header {
             background-color: #1a1f2c;
             color: white;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+        header h1 { margin: 0; font-size: 1.6rem; }
+        .cart-status-box {
+            background-color: #2ea44f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
-        header p {
-            margin: 5px 0 0 0;
-            color: #8f9cae;
-            font-size: 1rem;
-        }
-        .store-wrapper {
-            max-width: 1200px;
+        .container {
+            max-width: 1100px;
             margin: 40px auto;
             padding: 0 20px;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-            border: 1px solid #eef2f5;
-            min-height: 400px;
         }
-        footer {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             text-align: center;
-            padding: 40px 20px;
-            color: #777;
-            font-size: 0.9rem;
+            border: 1px solid #e1e4e8;
         }
+        .card h3 { margin: 10px 0; color: #111; }
+        .card p { color: #666; font-size: 0.95rem; height: 40px; }
+        .price-tag {
+            font-size: 1.5rem;
+            color: #222;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .btn-add {
+            background-color: #ff9900; /* Amazon Gold Styling */
+            color: #111;
+            border: 1px solid #a88734;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .btn-add:hover { background-color: #e68a00; }
+        .btn-add:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
-    <!-- Store Header Front Interface -->
+    <!-- Top Store Navigation Bar -->
     <header>
-        <h1>My 3D Printed Store</h1>
-        <p>Premium 3D models and prints. Fully secure Amazon-style checkout.</p>
+        <h1>🇮🇳 My 3D Printed Store (India)</h1>
+        <div class="cart-status-box" onclick="showCheckoutSummary()">
+            🛒 View Cart (<span id="global-cart-counter">0</span>)
+        </div>
     </header>
 
-    <!-- Secure Dynamic Shopping Dashboard Container -->
-    <div class="store-wrapper">
-        
-        <!-- SECURE EMBEDDED SHOPPING APP SYSTEM -->
-        <div id="my-store-demo"></div>
-        
-        <!-- This official script handles the Add to Cart, Grid, and Payment Checkout Engine securely -->
-        <script data-cfasync="false" type="text/javascript" src="https://ecwid.com" charset="UTF-8"></script>
-        <script type="text/javascript"> xProductBrowser("id=my-store-demo"); </script>
-        
+    <div class="container">
+        <div class="grid">
+            
+            <!-- PRODUCT 1: HOW TO ADD ITEMS (EDIT MANUALLY BELOW) -->
+            <div class="card">
+                <h3>Custom 3D Benchy Model</h3>
+                <p>High-precision calibration boat printed in premium PLA plastic.</p>
+                <div class="price-tag">₹399</div>
+                <button class="btn-add" onclick="addItemToBag('Custom 3D Benchy Model', 399)">Add to Cart</button>
+            </div>
+
+            <!-- PRODUCT 2 -->
+            <div class="card">
+                <h3>Mechanical Planetary Gears</h3>
+                <p>Fully functional interlocking gear toy printed with 0.2mm tolerances.</p>
+                <div class="price-tag">₹899</div>
+                <button class="btn-add" onclick="addItemToBag('Mechanical Planetary Gears', 899)">Add to Cart</button>
+            </div>
+
+            <!-- PRODUCT 3 -->
+            <div class="card">
+                <h3>Modular Desk Organizer</h3>
+                <p>Holds SD cards, dynamic hex wrenches, and extra printer nozzles.</p>
+                <div class="price-tag">₹1,249</div>
+                <button class="btn-add" onclick="addItemToBag('Modular Desk Organizer', 1249)">Add to Cart</button>
+            </div>
+
+        </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 3D Printed Hub. All rights reserved. Secure payments processed externally.</p>
-    </footer>
+    <!-- NATIVE SHOPPING JAVASCRIPT ENGINE -->
+    <script>
+        // Array that acts as our protected shopping cart storage data list
+        let currentUserCart = [];
+
+        function addItemToBag(name, costValue) {
+            currentUserCart.push({ name: name, price: costValue });
+            
+            // Instantly increments the green button badge notification summary numbers
+            document.getElementById('global-cart-counter').innerText = currentUserCart.length;
+            alert("🛒 Success! Added " + name + " to your cart total.");
+        }
+
+        function showCheckoutSummary() {
+            if (currentUserCart.length === 0) {
+                alert("Your shopping cart is currently empty! Add a 3D print to get started.");
+                return;
+            }
+            
+            let pricingTotal = currentUserCart.reduce((acc, item) => acc + item.price, 0);
+            let summaryString = currentUserCart.map(item => • ${item.name} - ₹${item.price}).join("\n");
+            
+            alert(--- YOUR ORDER CHECKOUT SUMMARY ---\n\n${summaryString}\n\n=======================\n💰 TOTAL PAYABLE AMOUNT: ₹${pricingTotal}\n=======================\n\nClick OK to proceed with payment arrangement configurations.);
+        }
+    </script>
 
 </body>
-</html>
+</html
