@@ -176,9 +176,9 @@
     <nav>
         <div class="logo">L LayerLab</div>
         <div class="categories">
-            <span>All products</span> <span>🪴 Planters</span> <span>🖥️ Desk & Tech</span> <span>🎁 Gifts</span> <span>💡 Lighting</span> <span>🐉 Toys</span> <span>⚙️ Prototyping</span>
+            <span>All products</span> <span>🪴 Planters</span> <span>🖥 Desk & Tech</span> <span>🎁 Gifts</span> <span>💡 Lighting</span> <span>🐉 Toys</span> <span>⚙ Prototyping</span>
         </div>
-        <div style="font-weight: 600; font-size: 0.95rem;" onclick="viewCartContents()">
+        <div style="font-weight: 600; font-size: 0.95rem; cursor: pointer;" onclick="viewCartContents()">
             🛒 Cart: <span id="master-cart-counter" style="background:#000; color:#fff; padding:2px 8px; border-radius:12px; font-size:0.8rem;">0</span>
         </div>
     </nav>
@@ -206,29 +206,37 @@
         <div class="grid">
             <!-- Product 1 -->
             <div class="product-card" id="p1">
-                <span class="badge">🔑 Top rated</span><div class="product-icon">🔑</div>
-                <h3 class="title">Custom Name Keychain</h3><p class="desc">Personalised, practical and made for you</p>
-                <div class="reviews">★ ★ ★ ★ ★ <span>4.8 (512 reviews)</span></div>
-                <div class="price-row"><div class="current-price price">₹299</div><div class="old-price">₹499</div><div class="discount">40% off</div></div>
-                <button class="btn-add-cart" onclick="addToCart('Custom Name Keychain', 299)">Add to cart</button>
-                <div class="owner-edit-box"><button onclick="editProduct('p1')" style="width:100%; padding:6px; background:#0366d6; color:white; border:none; border-radius:4px; cursor:pointer;">Modify Card</button></div>
+                <div>
+                    <span class="badge">🔑 Top rated</span><div class="product-icon">🔑</div>
+                    <h3 class="title">Custom Name Keychain</h3><p class="desc">Personalised, practical and made for you</p>
+                    <div class="reviews">★ ★ ★ ★ ★ <span>4.8 (512 reviews)</span></div>
+                    <div class="price-row"><div class="current-price price">₹299</div><div class="old-price">₹499</div><div class="discount">40% off</div></div>
+                </div>
+                <div>
+                    <button class="btn-add-cart" onclick="addToCart('Custom Name Keychain', 299)">Add to cart</button>
+                    <div class="owner-edit-box"><button onclick="editProduct('p1')" style="width:100%; padding:6px; background:#0366d6; color:white; border:none; border-radius:4px; cursor:pointer; margin-top:5px;">Modify Card</button></div>
+                </div>
             </div>
 
             <!-- Product 2 -->
             <div class="product-card" id="p2">
-                <span class="badge">🐉 Deal of the day</span><div class="product-icon">🐉</div>
-                <h3 class="title">Articulated Dragon</h3><p class="desc">Printed in one piece, moves like magic</p>
-                <div class="reviews">★ ★ ★ ★ ★ <span>4.9 (341 reviews)</span></div>
-                <div class="price-row"><div class="current-price price">₹899</div><div class="old-price">₹1,299</div><div class="discount">31% off</div></div>
-                <button class="btn-add-cart" onclick="addToCart('Articulated Dragon', 899)">Add to cart</button>
-                <div class="owner-edit-box"><button onclick="editProduct('p2')" style="width:100%; padding:6px; background:#0366d6; color:white; border:none; border-radius:4px; cursor:pointer;">Modify Card</button></div>
+                <div>
+                    <span class="badge">🐉 Deal of the day</span><div class="product-icon">🐉</div>
+                    <h3 class="title">Articulated Dragon</h3><p class="desc">Printed in one piece, moves like magic</p>
+                    <div class="reviews">★ ★ ★ ★ ★ <span>4.9 (341 reviews)</span></div>
+                    <div class="price-row"><div class="current-price price">₹899</div><div class="old-price">₹1,299</div><div class="discount">31% off</div></div>
+                </div>
+                <div>
+                    <button class="btn-add-cart" onclick="addToCart('Articulated Dragon', 899)">Add to cart</button>
+                    <div class="owner-edit-box"><button onclick="editProduct('p2')" style="width:100%; padding:6px; background:#0366d6; color:white; border:none; border-radius:4px; cursor:pointer; margin-top:5px;">Modify Card</button></div>
+                </div>
             </div>
 
             <!-- Product 3 -->
             <div class="product-card" id="p3">
-                <div class="product-icon">🎧</div>
-                <h3 class="title">Curved Headphone Stand</h3><p class="desc">Give your headphones somewhere to live</p>
-                <div class="reviews">★ ★ ★ ★ ★ <span>4.7 (205 reviews)</span></div>
-                <div class="price-row"><div class="current-price price">₹799</div><div class="old-price">₹1,199</div><div class="discount">33% off</div></div>
-                <button class="btn-add-cart" onclick="addToCart('Curved Headphone Stand', 799)">Add to cart</button>
-                <div class="owner-edit-box"><button onclick="editProduct('p3')" style="width:100%; padding:6px; background:#0366d6; color:white; border:none; border-radius:4px; cursor:pointer;">Modify Card</button></div>
+                <div>
+                    <div class="product-icon">🎧</div>
+                    <h3 class="title">Curved Headphone Stand</h3><p class="desc">Give your headphones somewhere to live</p>
+                    <div class="reviews">★ ★ ★ ★ ★ <span>4.7 (205 reviews)</span></div>
+                    <div class="price-row"><div class="current-price price">₹799</div><div class="old-price">₹1,199</div><div class="discount">33% off</div></div>
+                </div>
