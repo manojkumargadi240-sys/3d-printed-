@@ -3,141 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printed Store India</title>
+    <title>3D Printing Hub</title>
     <style>
+        /* Your Original Design Framework styling */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f6f9;
             color: #333;
         }
         header {
-            background-color: #1a1f2c;
+            background-color: #24292e;
             color: white;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            padding: 20px;
+            text-align: center;
+            position: relative;
         }
-        header h1 { margin: 0; font-size: 1.6rem; }
-        .cart-status-box {
-            background-color: #2ea44f;
+        .admin-login-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #555;
             color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            font-weight: bold;
         }
+        .admin-login-btn:hover { background-color: #777; }
         .container {
-            max-width: 1100px;
-            margin: 40px auto;
+            max-width: 1000px;
+            margin: 30px auto;
             padding: 0 20px;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
         .card {
             background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            text-align: center;
-            border: 1px solid #e1e4e8;
-        }
-        .card h3 { margin: 10px 0; color: #111; }
-        .card p { color: #666; font-size: 0.95rem; height: 40px; }
-        .price-tag {
-            font-size: 1.5rem;
-            color: #222;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-        .btn-add {
-            background-color: #ff9900; /* Amazon Gold Styling */
-            color: #111;
-            border: 1px solid #a88734;
-            padding: 12px 20px;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 20px;
             border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: relative;
         }
-        .btn-add:hover { background-color: #e68a00; }
-        .btn-add:active { transform: scale(0.98); }
+        h2 { color: #0366d6; margin-top: 0; }
+        ul { padding-left: 20px; line-height: 1.6; }
+        .btn {
+            display: inline-block;
+            background-color: #2ea44f;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 10px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+        .btn:hover { background-color: #2c974b; }
+        
+        /* Owner Mode Protected Action Panel */
+        .admin-panel {
+            display: none;
+            background-color: #fff9e6;
+            border: 1px dashed #ff9900;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .admin-badge {
+            background-color: #d9381e;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Top Store Navigation Bar -->
     <header>
-        <h1>🇮🇳 My 3D Printed Store (India)</h1>
-        <div class="cart-status-box" onclick="showCheckoutSummary()">
-            🛒 View Cart (<span id="global-cart-counter">0</span>)
-        </div>
+        <h1>My 3D Printing Showcase Dashboard</h1>
+        <p>Tracking configurations, prints, and custom STL file deployments</p>
+        <!-- OWNER PORTAL AUTHENTICATION ACTION ELEMENT -->
+        <button class="admin-login-btn" id="loginBtn" onclick="triggerOwnerAccess()">Owner Sign In</button>
     </header>
 
     <div class="container">
+        <!-- Live Admin Session Status Banner Notification Box -->
+        <div id="statusAlert" style="display:none; background-color:#2ea44f; color:white; padding:10px; border-radius:6px; margin-bottom:20px; text-align:center; font-weight:bold;">
+            🔓 Owner Session Verified. You can now modify product specifications.
+        </div>
+
         <div class="grid">
-            
-            <!-- PRODUCT 1: HOW TO ADD ITEMS (EDIT MANUALLY BELOW) -->
+            <!-- Card 1: Machine Setup Specs -->
             <div class="card">
-                <h3>Custom 3D Benchy Model</h3>
-                <p>High-precision calibration boat printed in premium PLA plastic.</p>
-                <div class="price-tag">₹399</div>
-                <button class="btn-add" onclick="addItemToBag('Custom 3D Benchy Model', 399)">Add to Cart</button>
+                <h2>🛠️ Hardware Specs</h2>
+                <ul>
+                    <li><strong>Printer:</strong> <span id="printerModel">Ender 3 / Custom</span></li>
+                    <li><strong>Filament:</strong> PLA / PETG / TPU</li>
+                    <li><strong>Nozzle Size:</strong> 0.4mm Brass</li>
+                </ul>
             </div>
 
-            <!-- PRODUCT 2 -->
+            <!-- Card 2: Print Configurations Slicer -->
             <div class="card">
-                <h3>Mechanical Planetary Gears</h3>
-                <p>Fully functional interlocking gear toy printed with 0.2mm tolerances.</p>
-                <div class="price-tag">₹899</div>
-                <button class="btn-add" onclick="addItemToBag('Mechanical Planetary Gears', 899)">Add to Cart</button>
+                <h2>🎛️ Standard Slicer Baseline</h2>
+                <ul>
+                    <li><strong>Layer Height:</strong> 0.20mm</li>
+                    <li><strong>Infill Density:</strong> 15% Gyroid</li>
+                    <li><strong>Print Speed:</strong> 60 mm/s</li>
+                </ul>
             </div>
 
-            <!-- PRODUCT 3 -->
+            <!-- Card 3: Interactive Catalog Grid -->
             <div class="card">
-                <h3>Modular Desk Organizer</h3>
-                <p>Holds SD cards, dynamic hex wrenches, and extra printer nozzles.</p>
-                <div class="price-tag">₹1,249</div>
-                <button class="btn-add" onclick="addItemToBag('Modular Desk Organizer', 1249)">Add to Cart</button>
-            </div>
+                <h2>📂 Model Catalogue</h2>
+                <p>Access active project prints and associated design file tracking.</p>
+                <div style="font-weight:bold; margin:10px 0; font-size:1.2rem;">Price: <span id="productPrice">₹399</span></div>
+                
+                <!-- PUBLIC SELECTION ENGINE CONTROLS -->
+                <button class="btn" onclick="executeCartAddition()">Add to Cart</button>
+                <div id="cartDisplay" style="margin-top:10px; font-weight:bold; color:#2ea44f;">🛒 Items in Cart: 0</div>
 
+                <!-- OWNER MODIFICATION PANEL (Hidden until password verified) -->
+                <div class="admin-panel" id="adminPanel">
+                    <span class="admin-badge">Owner Management Console</span>
+                    <button class="btn" style="background-color:#0366d6;" onclick="modifyProductDetails()">Edit Product & Price</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- NATIVE SHOPPING JAVASCRIPT ENGINE -->
     <script>
-        // Array that acts as our protected shopping cart storage data list
-        let currentUserCart = [];
+        // Set your personal private account password here
+        const OWNER_PASSWORD = "admin"; 
+        let isOwnerLoggedIn = false;
+        let globalCartItemsCount = 0;
 
-        function addItemToBag(name, costValue) {
-            currentUserCart.push({ name: name, price: costValue });
-            
-            // Instantly increments the green button badge notification summary numbers
-            document.getElementById('global-cart-counter').innerText = currentUserCart.length;
-            alert("🛒 Success! Added " + name + " to your cart total.");
-        }
-
-        function showCheckoutSummary() {
-            if (currentUserCart.length === 0) {
-                alert("Your shopping cart is currently empty! Add a 3D print to get started.");
+        // Secure Entry Portal Logic Configuration
+        function triggerOwnerAccess() {
+            if (isOwnerLoggedIn) {
+                // Toggle sign out routine if already active
+                isOwnerLoggedIn = false;
+                document.getElementById('adminPanel').style.display = 'none';
+                document.getElementById('statusAlert').style.display = 'none';
+                document.getElementById('loginBtn').innerText = 'Owner Sign In';
+                alert("Logged out of owner session safely.");
                 return;
             }
+
+            let promptResponse = prompt("Enter secure owner passcode authorization key:");
+            if (promptResponse === OWNER_PASSWORD) {
+                isOwnerLoggedIn = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('statusAlert').style.display = 'block';
+                document.getElementById('loginBtn').innerText = 'Sign Out';
+            } else {
+                alert("❌ Authentication Invalid. Access Denied.");
+            }
+        }
+
+        // Public Customer E-Commerce Script Execution Block
+        function executeCartAddition() {
+            globalCartItemsCount++;
+            document.getElementById('cartDisplay').innerText = "🛒 Items in Cart: " + globalCartItemsCount;
+            alert(`🛒 Item added successfully to cart! Running total: ${globalCartItemsCount} item(s).`);
+        }
+
+        // Owner Privilege Actions (Only executable if password was correct)
+        function modifyProductDetails() {
+            if (!isOwnerLoggedIn) return;
             
-            let pricingTotal = currentUserCart.reduce((acc, item) => acc + item.price, 0);
-            let summaryString = currentUserCart.map(item => • ${item.name} - ₹${item.price}).join("\n");
+            let targetName = prompt("Enter updated design asset model name:");
+            let targetPrice = prompt("Enter new product listing cost (e.g. ₹499):");
             
-            alert(--- YOUR ORDER CHECKOUT SUMMARY ---\n\n${summaryString}\n\n=======================\n💰 TOTAL PAYABLE AMOUNT: ₹${pricingTotal}\n=======================\n\nClick OK to proceed with payment arrangement configurations.);
+            if (targetName) {
+                document.querySelector('.card h2').innerText = "📂 " + targetName;
+            }
+            if (targetPrice) {
+                document.getElementById('productPrice').innerText = targetPrice;
+            }
         }
     </script>
 
 </body>
-</html
+</html>
