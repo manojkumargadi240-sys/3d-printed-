@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Printing Hub</title>
     <style>
-        /* Your Original Design Framework styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -20,7 +19,7 @@
             text-align: center;
             position: relative;
         }
-        .admin-login-btn {
+        .owner-btn {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -32,7 +31,7 @@
             cursor: pointer;
             font-weight: bold;
         }
-        .admin-login-btn:hover { background-color: #777; }
+        .owner-btn:hover { background-color: #666; }
         .container {
             max-width: 1000px;
             margin: 30px auto;
@@ -48,7 +47,6 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            position: relative;
         }
         h2 { color: #0366d6; margin-top: 0; }
         ul { padding-left: 20px; line-height: 1.6; }
@@ -68,25 +66,14 @@
             text-align: center;
         }
         .btn:hover { background-color: #2c974b; }
-        
-        /* Owner Mode Protected Action Panel */
-        .admin-panel {
+        .owner-panel {
             display: none;
             background-color: #fff9e6;
             border: 1px dashed #ff9900;
             margin-top: 15px;
             padding: 10px;
             border-radius: 6px;
-        }
-        .admin-badge {
-            background-color: #d9381e;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
+            text-align: center;
         }
     </style>
 </head>
@@ -95,28 +82,26 @@
     <header>
         <h1>My 3D Printing Showcase Dashboard</h1>
         <p>Tracking configurations, prints, and custom STL file deployments</p>
-        <!-- OWNER PORTAL AUTHENTICATION ACTION ELEMENT -->
-        <button class="admin-login-btn" id="loginBtn" onclick="triggerOwnerAccess()">Owner Sign In</button>
+        <button class="owner-btn" id="loginBtn" onclick="toggleOwnerMode()">Owner Sign In</button>
     </header>
 
     <div class="container">
-        <!-- Live Admin Session Status Banner Notification Box -->
-        <div id="statusAlert" style="display:none; background-color:#2ea44f; color:white; padding:10px; border-radius:6px; margin-bottom:20px; text-align:center; font-weight:bold;">
-            🔓 Owner Session Verified. You can now modify product specifications.
+        <div id="ownerAlert" style="display:none; background-color:#2ea44f; color:white; padding:10px; border-radius:6px; margin-bottom:20px; text-align:center; font-weight:bold;">
+            🔓 Owner Mode Active. You can now modify product card details.
         </div>
 
         <div class="grid">
-            <!-- Card 1: Machine Setup Specs -->
+            <!-- Card 1 -->
             <div class="card">
                 <h2>🛠️ Hardware Specs</h2>
                 <ul>
-                    <li><strong>Printer:</strong> <span id="printerModel">Ender 3 / Custom</span></li>
+                    <li><strong>Printer:</strong> Enter Printer Model</li>
                     <li><strong>Filament:</strong> PLA / PETG / TPU</li>
                     <li><strong>Nozzle Size:</strong> 0.4mm Brass</li>
                 </ul>
             </div>
 
-            <!-- Card 2: Print Configurations Slicer -->
+            <!-- Card 2 -->
             <div class="card">
                 <h2>🎛️ Standard Slicer Baseline</h2>
                 <ul>
@@ -126,74 +111,62 @@
                 </ul>
             </div>
 
-            <!-- Card 3: Interactive Catalog Grid -->
+            <!-- Card 3 -->
             <div class="card">
-                <h2>📂 Model Catalogue</h2>
+                <h2 id="cardTitle">📂 Model Catalogue</h2>
                 <p>Access active project prints and associated design file tracking.</p>
-                <div style="font-weight:bold; margin:10px 0; font-size:1.2rem;">Price: <span id="productPrice">₹399</span></div>
+                <div style="font-weight: bold; margin: 10px 0; font-size: 1.2rem;">Price: <span id="cardPrice">₹399</span></div>
                 
-                <!-- PUBLIC SELECTION ENGINE CONTROLS -->
-                <button class="btn" onclick="executeCartAddition()">Add to Cart</button>
-                <div id="cartDisplay" style="margin-top:10px; font-weight:bold; color:#2ea44f;">🛒 Items in Cart: 0</div>
+                <button class="btn" onclick="addToCart()">Add to Cart</button>
+                <div id="cartCountDisplay" style="margin-top: 10px; font-weight: bold; color: #2ea44f;">🛒 Items in Cart: 0</div>
 
-                <!-- OWNER MODIFICATION PANEL (Hidden until password verified) -->
-                <div class="admin-panel" id="adminPanel">
-                    <span class="admin-badge">Owner Management Console</span>
-                    <button class="btn" style="background-color:#0366d6;" onclick="modifyProductDetails()">Edit Product & Price</button>
+                <!-- Hidden Owner Options -->
+                <div class="owner-panel" id="ownerPanel">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: #d9381e;">Owner Controls</p>
+                    <button class="btn" style="background-color:#0366d6;" onclick="editProduct()">Edit Item Details</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Set your personal private account password here
-        const OWNER_PASSWORD = "admin"; 
-        let isOwnerLoggedIn = false;
-        let globalCartItemsCount = 0;
+        let cartItems = 0;
+        let loggedIn = false;
+        const SECRET_KEY = "admin"; // Change this to your password
 
-        // Secure Entry Portal Logic Configuration
-        function triggerOwnerAccess() {
-            if (isOwnerLoggedIn) {
-                // Toggle sign out routine if already active
-                isOwnerLoggedIn = false;
-                document.getElementById('adminPanel').style.display = 'none';
-                document.getElementById('statusAlert').style.display = 'none';
+        function addToCart() {
+            cartItems++;
+            document.getElementById('cartCountDisplay').innerText = "🛒 Items in Cart: " + cartItems;
+            alert("Success! Item added to cart. Total items: " + cartItems);
+        }
+
+        function toggleOwnerMode() {
+            if (loggedIn) {
+                loggedIn = false;
+                document.getElementById('ownerPanel').style.display = 'none';
+                document.getElementById('ownerAlert').style.display = 'none';
                 document.getElementById('loginBtn').innerText = 'Owner Sign In';
-                alert("Logged out of owner session safely.");
+                alert("Logged out of owner session.");
                 return;
             }
 
-            let promptResponse = prompt("Enter secure owner passcode authorization key:");
-            if (promptResponse === OWNER_PASSWORD) {
-                isOwnerLoggedIn = true;
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('statusAlert').style.display = 'block';
+            let passwordAttempt = prompt("Enter owner security passcode:");
+            if (passwordAttempt === SECRET_KEY) {
+                loggedIn = true;
+                document.getElementById('ownerPanel').style.display = 'block';
+                document.getElementById('ownerAlert').style.display = 'block';
                 document.getElementById('loginBtn').innerText = 'Sign Out';
             } else {
-                alert("❌ Authentication Invalid. Access Denied.");
+                alert("Incorrect password. Access denied.");
             }
         }
 
-        // Public Customer E-Commerce Script Execution Block
-        function executeCartAddition() {
-            globalCartItemsCount++;
-            document.getElementById('cartDisplay').innerText = "🛒 Items in Cart: " + globalCartItemsCount;
-            alert(`🛒 Item added successfully to cart! Running total: ${globalCartItemsCount} item(s).`);
-        }
-
-        // Owner Privilege Actions (Only executable if password was correct)
-        function modifyProductDetails() {
-            if (!isOwnerLoggedIn) return;
-            
-            let targetName = prompt("Enter updated design asset model name:");
-            let targetPrice = prompt("Enter new product listing cost (e.g. ₹499):");
-            
-            if (targetName) {
-                document.querySelector('.card h2').innerText = "📂 " + targetName;
-            }
-            if (targetPrice) {
-                document.getElementById('productPrice').innerText = targetPrice;
-            }
+        function editProduct() {
+            if (!loggedIn) return;
+            let newName = prompt("Enter new item name:");
+            let newPrice = prompt("Enter new price (Include currency symbol, e.g., ₹499):");
+            if (newName) document.getElementById('cardTitle').innerText = "📂 " + newName;
+            if (newPrice) document.getElementById('cardPrice').innerText = newPrice;
         }
     </script>
 
